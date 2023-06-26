@@ -58,7 +58,7 @@ $ ssh -NL 8888:holygpuXXXXXXX.rc.fas.harvard.edu:8888 USER@login.rc.fas.harvard.
 with the appropriate values for `XXXXXXX` and `USER`.
 
 ## Code-server
-Code-server is an off-brand variant of Visual Studio Code which runs entirely on the remote server — you interact with it through your browser. It is possible to use the standard Visual Studio Code desktop app and ssh into your Singularity containers, but the [solution](https://github.com/microsoft/vscode-remote-release/issues/3066#issuecomment-1019500216) requires your SSH config file to grow as (# cluster nodes) x (# containers), which is a pain. (So far, despite hours of wasted time and misleading conversations with GPT-4, I have failed to find a workable shortcut.)
+[Code-server](https://coder.com/docs/code-server/latest) is a variant of Visual Studio Code which runs entirely on the remote server — you interact with it through your browser. It is possible to use the standard Visual Studio Code desktop app and ssh into your Singularity containers, but the [solution](https://github.com/microsoft/vscode-remote-release/issues/3066#issuecomment-1019500216) requires your SSH config file to grow as (# cluster nodes) x (# containers), which is a pain. (So far, despite hours of wasted time and misleading conversations with GPT-4, I have failed to find a workable shortcut.)
 
 This container has code-server installed by default. To get the code-server server going, run the following command from within the container:
 ```console
