@@ -1,8 +1,13 @@
+# We are going to start with a base image from NVIDIA, which is a Ubuntu system with CUDA and cuDNN installed.
+# You can also use a different base image. There are many available on Docker Hub (https://hub.docker.com).
+# For instance, there are images for PyTorch, PyTorch Lightning, HuggingFace, MosaicML, etc.
+# Most of the aforementioned images start with a NVIDIA base image like the below, so we will use that as our base for simplicity.
+# To do so, change the FROM line below to the url of the image tag you want to use.
 Bootstrap: docker
 From: nvcr.io/nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
 
 %files
-    # Copy the requirements.txt file into the container
+    # Copy the requirements.txt file into the container so it can be accessed during building.
     requirements.txt
 
 %post
@@ -19,5 +24,3 @@ From: nvcr.io/nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
     
     # install code-server
     curl -fsSL https://code-server.dev/install.sh | sh
-    # remove code-server password
-    sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
