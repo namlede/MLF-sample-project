@@ -1,0 +1,23 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+%files
+    # Copy the requirements.txt file into the container
+    requirements.txt
+
+%post
+    # Update and install Ubuntu packages
+    apt-get update && apt-get install -y
+    apt-get install -y --no-install-recommends git curl
+    apt-get install -y python3 python3-pip
+    # clean up the apt cache
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+    # Install the required Python packages without caching the pip install files
+    pip3 install -r requirements.txt --no-cache-dir
+    
+    # install code-server
+    curl -fsSL https://code-server.dev/install.sh | sh
+    # remove code-server password
+    sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
