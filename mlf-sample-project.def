@@ -14,13 +14,21 @@ From: nvcr.io/nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
     # Update and install Ubuntu packages
     apt-get update && apt-get install -y
     apt-get install -y --no-install-recommends git curl
-    apt-get install -y python3 python3-pip
+
+    apt-get install -y python3 python3-pip python3-venv
     # clean up the apt cache
     apt-get clean
     rm -rf /var/lib/apt/lists/*
+
+    python3 -m venv /venv
+    PATH=/venv/bin:$PATH
+    pip3 install wheel
 
     # Install the required Python packages without caching the pip install files
     pip3 install -r requirements.txt --no-cache-dir
     
     # install code-server
     curl -fsSL https://code-server.dev/install.sh | sh
+
+%environment
+    PATH=/venv/bin:$PATH

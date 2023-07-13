@@ -29,11 +29,11 @@ The second option is to create a Sylabs account and build remotely on their free
 
 To enter a shell in the container, run the following command:
 ```console
-singularity shell --nv --cleanenv /path/to/mlf-sample-project.sif
+singularity shell --nv /path/to/mlf-sample-project.sif
 ```
 Presto! You now are inside the container and can run commands to your heart's content.
 
-The `--nv` flag is necessary if you want to use GPUs; otherwise the container's NVIDIA drivers will be tragically unused. The `--cleanenv` flag prevents the container from inheriting environment variables from the host machine. (Docker containers, unlike Singularity containers, have mutable file systems, so it is feasible to isolate the container from the host system. But with Singularity, isolationism is a lost cause; I'm including the `--cleanenv` flag here as a futile symbolic gesture.)
+The `--nv` flag is necessary if you want to use GPUs; otherwise the container's NVIDIA drivers will be tragically unused.
 
 To run a shell command in the container (e.g. in a SLURM batch script), run the following command:
 ```console
@@ -42,9 +42,11 @@ singularity exec --nv --cleanenv /path/to/mlf-sample-project.sif COMMAND
 For example, COMMAND might be a Python script.
 
 ## Important notes
-- The container's file system is read-only. From within the container, you will by default have access to directories on the host's file system.
-- One unfortunate consequence of this is that when you perform Python imports, the Python interpreter may search through Python packages in your home directory in addition to those installed inside the container (though the container's packages should be searched through first). This means that if you have a package installed in your home directory that is not installed in the container, Python may still be able to import it, leading to different behavior across users of the container. This can be avoided by always running python with the `-s` flag, which prevents it from searching through your home directory site-packages (and by ensuring that your `sys.path` doesn't have any other local paths). Unfortunately, Jupyter does not have an equivalent flag, so if you are using a Jupyter notebook, just be careful.
-- JupyterLab or code-server will automatically store config files and data in your home directory, so these will not be specific to the individual container. (Storing them inside the container's file system is impossible because this is immutable.)
+- The container's file system is read-only. From within the container, you will by default have access to directories on the host's file system
+- JupyterLab or code-server will automatically store config files and data in the host system's default locations, so these will not be specific to the individual container. (Storing them inside the container's file system is impossible because this is immutable.)
+
+## Python
+In the example definition file I have set up a pip virtual environment called `venv`. I found that if I don't use a virtual environment, Python searches for modules not just inside the container but also on the host system. With my set up, I need to rebuild the container whenever I want to install new Python packages (after adding them to `requirements.txt`), but I'm willing to accept this inconvenience for the sake of having an environment that isn't contaminated by the host system. (If you don't use a virtual environment, you can install packages on your host system with `pip install --user` and these will be accessible from within the container.)
 
 ## JupyterLab
 This container has JupyterLab installed by default. To run the server, run the following command from within the container:
