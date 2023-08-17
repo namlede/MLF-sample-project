@@ -1,8 +1,8 @@
 torch==2.0.1
-numpy==1.24.3
-jupyterlab==4.0.2
-ipywidgets==8.0.6
-tqdm==4.65.0
-matplotlib==3.7.1
-pandas==2.0.2
-transformers==4.30.2
+numpy==1.25.2
+jupyterlab==4.0.5
+ipywidgets==8.1.0
+tqdm==4.66.1
+matplotlib==3.7.2
+pandas==2.0.3
+transformers==4.31.0
